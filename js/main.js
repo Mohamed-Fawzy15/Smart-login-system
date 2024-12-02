@@ -1,20 +1,18 @@
 var users = [];
 
 // the key for localstorage
-
 KEY = "users";
 
 // variable that catch the input
-// signUp
+var signupForm = document.querySelector("#signupForm");
 var signUpNameInput = document.querySelector("#signupName");
 var signUpEmailInput = document.querySelector("#signupEmail");
 var signUpPassInput = document.querySelector("#signupPass");
 var signUpSubmitBtn = document.querySelector("#signupSubmit");
 
-// LogIn
-var loginSubmitBtn = document.querySelector("#loginSubmit");
-var loginEmailInput = document.querySelector("#loginEmail");
-var loginPasswordInput = document.querySelector("#loginPass");
+signupForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+});
 
 if (localStorage.getItem(KEY) != null) {
   users = JSON.parse(localStorage.getItem(KEY));
@@ -22,11 +20,27 @@ if (localStorage.getItem(KEY) != null) {
   users = [];
 }
 
+function validateInput() {
+  if (
+    signUpNameInput.value.trim() !== "" &&
+    signUpEmailInput.value.trim() !== "" &&
+    signUpPassInput.value.trim() !== ""
+  ) {
+    signUpSubmitBtn.disabled = false;
+  } else {
+    signUpSubmitBtn.disabled = true;
+  }
+}
+
+signUpNameInput.addEventListener("input", validateInput);
+signUpEmailInput.addEventListener("input", validateInput);
+signUpPassInput.addEventListener("input", validateInput);
+
 function pushData() {
   var userData = {
     name: signUpNameInput.value,
     email: signUpEmailInput.value,
-    password: signUpPassInput,
+    password: signUpPassInput.value,
   };
 
   users.push(userData);
@@ -40,18 +54,7 @@ function clearInputs() {
   signUpPassInput.value = "";
 }
 
-// signUpSubmitBtn.addEventListener("click", function (e) {
-//   e.preventDefault();
-//   pushData();
-// });
-
-function loginForm() {
-  for (var i = 0; i < users.length; i++) {
-    if (
-      loginEmailInput.value === users[i].email &&
-      loginPasswordInput - value === users[i].password
-    ) {
-      console.log("hi");
-    }
-  }
-}
+signUpSubmitBtn.addEventListener("click", function (e) {
+  pushData();
+  window.location.href = "http://127.0.0.1:5500/index.html";
+});
